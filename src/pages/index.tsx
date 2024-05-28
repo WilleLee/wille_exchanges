@@ -1,5 +1,5 @@
 import useNav from "@hooks/useNav";
-import useRates from "@libs/swr/useRates";
+import useRates from "@libs/swr/use-rates";
 import { IRate } from "@libs/types";
 import { Fragment, ReactNode, useCallback } from "react";
 
