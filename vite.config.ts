@@ -22,7 +22,9 @@ export default defineConfig({
       "/api": {
         target: "https://www.koreaexim.go.kr/site/program/financial",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (path) => {
+          return path.replace(/^\/api/, "");
+        },
       },
     },
   },

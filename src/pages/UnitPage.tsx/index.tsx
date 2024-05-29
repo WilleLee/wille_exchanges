@@ -246,6 +246,7 @@ const InputInfoView = memo(function InputInfoView() {
       >
         <li>소수점 둘째 자리 수 아래는 버림</li>
         <li>{formatNumberInput(String(MAX_INPUT))}을 초과하여 입력 불가능</li>
+        <li>11시 이전인 경우 하루 전의 환율을 조회함</li>
       </ul>
     </div>
   );
