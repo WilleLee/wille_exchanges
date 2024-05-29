@@ -1,7 +1,15 @@
 import useNav from "@hooks/useNav";
+import { formatNumberInput, inputToNumber } from "@libs/inputs";
 import { IRate } from "@libs/types";
 import { useRatesStore } from "@libs/zustand/rates/use-rates-store";
-import { ChangeEvent, ReactNode, useCallback, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  Fragment,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 
 export default function UnitPage() {
@@ -24,9 +32,13 @@ export default function UnitPage() {
   return (
     <div>
       <h3>{unitRate.cur_unit}</h3>
-      <Controller unitRate={unitRate}>
-        {({ krwInput, unitInput, onChangeKrw }) => (
-          <div>
+      <Controller
+        unitRate={unitRate}
+        isHundred={unitRate.cur_unit.includes("100")}
+        deal={inputToNumber(unitRate.deal_bas_r)}
+      >
+        {({ krwInput, unitInput, onChangeKrw, onChangeUnit }) => (
+          <Fragment>
             <label>
               KRW{" "}
               <input
@@ -40,12 +52,23 @@ export default function UnitPage() {
               <input
                 data-testid={`input_${unitRate.cur_unit}`}
                 value={unitInput}
-                onChange={() => {}}
+                onChange={onChangeUnit}
               />
             </label>
-          </div>
+          </Fragment>
         )}
       </Controller>
+      <div>
+        <h4>시세 정보</h4>
+        <p>
+          <span>송금 보낼 때</span>
+          <span data-testid="ttb">{formatNumberInput(unitRate.ttb)}</span>
+        </p>
+        <p>
+          <span>송금 받을 때</span>
+          <span data-testid="tts">{formatNumberInput(unitRate.tts)}</span>
+        </p>
+      </div>
     </div>
   );
 }
@@ -54,73 +77,48 @@ interface ControllerChildrenArgs {
   krwInput: string;
   unitInput: string;
   onChangeKrw: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeUnit: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface ControllerProps {
   children: (args: ControllerChildrenArgs) => ReactNode;
   unitRate: IRate;
+  isHundred: boolean;
+  deal: number;
 }
 
-function Controller({ children, unitRate }: ControllerProps) {
-  const initialUnitInput = unitRate.deal_bas_r.replace(/,/g, "");
-  const [krwInput, setKrwInput] = useState("1");
-  const [unitInput, setUnitInput] = useState(initialUnitInput);
-  const deal = useMemo(() => {
-    const original = unitRate.deal_bas_r;
-    const dotIndex = unitRate.deal_bas_r.indexOf(".");
-    if (dotIndex === -1) {
-      return Number(original.replace(/\D/g, ""));
-    }
-    const left = original.slice(0, dotIndex).replace(/\D/g, "");
-    const right = original.slice(dotIndex + 1).replace(/\D/g, "");
-    return Number(`${left}.${right}`);
-  }, [unitRate]);
+function Controller({ children, unitRate, isHundred, deal }: ControllerProps) {
+  const [krwInput, setKrwInput] = useState(
+    formatNumberInput(unitRate.deal_bas_r),
+  );
+  const [unitInput, setUnitInput] = useState(isHundred ? "100" : "1");
 
   const handleChangeKrw = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      const dotIndex = e.target.value.indexOf(".");
       const value = e.target.value;
-
-      if (dotIndex === -1) {
-        const replaced = value.replace(/\D/g, "");
-        if (Number(replaced) > 100000000) {
-          return;
-        }
-        if (replaced === "") {
-          setKrwInput("0");
-          setUnitInput("0");
-        } else {
-          const trimmed = replaced.replace(/^0+/, "0");
-          if (trimmed.length > 1) {
-            setKrwInput(trimmed.replace(/^0+/, ""));
-          } else {
-            setKrwInput(trimmed);
-          }
-          const u = (Number(replaced) / deal).toFixed(2);
-          setUnitInput(u);
-        }
-        return;
-      }
-
-      let left = value.slice(0, dotIndex).replace(/\D/g, "");
-      if (left === "") {
-        left = "0";
-      }
-      if (Number(left) > 100000000) {
-        return;
-      }
-      const right = value
-        .slice(dotIndex + 1)
-        .replace(/\D/g, "")
-        .slice(0, 2);
-
-      const re = `${left}.${right}`;
-      const trimmed = re.replace(/^0+/, "0");
-      setKrwInput(trimmed);
-      const u = (Number(re) / deal).toFixed(2);
-      setUnitInput(u);
+      const formatted = formatNumberInput(value);
+      const inputToNum = inputToNumber(formatted);
+      const nextUnit = isHundred
+        ? formatNumberInput((inputToNum / deal) * 100 + "")
+        : formatNumberInput(inputToNum / deal + "");
+      setKrwInput(formatted);
+      setUnitInput(nextUnit);
     },
-    [deal],
+    [deal, isHundred],
+  );
+
+  const handleChangeUnit = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const formatted = formatNumberInput(value);
+      const inputToNum = inputToNumber(formatted);
+      const nextKrw = isHundred
+        ? formatNumberInput((inputToNum * deal) / 100 + "")
+        : formatNumberInput(inputToNum * deal + "");
+      setUnitInput(formatted);
+      setKrwInput(nextKrw);
+    },
+    [deal, isHundred],
   );
 
   if (!children || typeof children !== "function") return null;
@@ -129,5 +127,6 @@ function Controller({ children, unitRate }: ControllerProps) {
     krwInput,
     unitInput,
     onChangeKrw: handleChangeKrw,
+    onChangeUnit: handleChangeUnit,
   });
 }

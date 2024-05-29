@@ -46,12 +46,93 @@ describe("UnitPage", () => {
     const { unmount } = initWithCode("USD");
     const heading = screen.getByRole("heading", { name: "USD" });
     expect(heading).toBeDefined();
-    const krwInput = screen.getByTestId("input_krw") as HTMLInputElement;
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
     expect(krwInput).toBeDefined();
-    expect(krwInput.value).toStrictEqual("1");
-    const usdInput = screen.getByTestId("input_usd") as HTMLInputElement;
+    expect(krwInput.value).toStrictEqual("1,130.5");
+    const usdInput = screen.getByTestId("input_USD") as HTMLInputElement;
     expect(usdInput).toBeDefined();
-    expect(usdInput.value).toStrictEqual("1130.5");
+    expect(usdInput.value).toStrictEqual("1");
+    const ttb = screen.getByTestId("ttb");
+    expect(ttb.innerHTML).toStrictEqual("1,139.00");
+    const tts = screen.getByTestId("tts");
+    expect(tts.innerHTML).toStrictEqual("1,122.00");
+    unmount();
+  });
+  test("should change the krw input in correct format", async () => {
+    const { unmount } = initWithCode("USD");
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
+    await userEvent.clear(krwInput);
+    await userEvent.type(krwInput, "123456789");
+    await waitFor(async () => {
+      expect(krwInput.value).toStrictEqual("123,456,789");
+    });
+    await userEvent.clear(krwInput);
+    await userEvent.type(krwInput, "123456789.333");
+    await waitFor(async () => {
+      expect(krwInput.value).toStrictEqual("123,456,789.33");
+    });
+    unmount();
+  });
+  test("should update usd input when krw input is changed", async () => {
+    const { unmount } = initWithCode("USD");
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
+    const usdInput = screen.getByTestId("input_USD") as HTMLInputElement;
+    await userEvent.clear(krwInput);
+    await userEvent.type(krwInput, "2261");
+    await waitFor(async () => {
+      expect(usdInput.value).toStrictEqual("2");
+    });
+    unmount();
+  });
+  test("should change the usd input in correct format", async () => {
+    const { unmount } = initWithCode("USD");
+    const usdInput = screen.getByTestId("input_USD") as HTMLInputElement;
+    await userEvent.clear(usdInput);
+    await userEvent.type(usdInput, "123456789");
+    await waitFor(async () => {
+      expect(usdInput.value).toStrictEqual("123,456,789");
+    });
+    unmount();
+  });
+  test("should update krw input when usd input is changed", async () => {
+    const { unmount } = initWithCode("USD");
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
+    const usdInput = screen.getByTestId("input_USD") as HTMLInputElement;
+    await userEvent.clear(usdInput);
+    await userEvent.type(usdInput, "2");
+    await waitFor(async () => {
+      expect(krwInput.value).toStrictEqual("2,261");
+    });
+    await userEvent.clear(usdInput);
+    await userEvent.type(usdInput, "33");
+    await waitFor(async () => {
+      expect(krwInput.value).toStrictEqual("37,306.5");
+    });
+    unmount();
+  });
+
+  // 옌화
+  test("should update jpy input when krw input is changed", async () => {
+    const { unmount } = initWithCode("JPY(100)");
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
+    const jpyInput = screen.getByTestId("input_JPY(100)") as HTMLInputElement;
+    await userEvent.clear(krwInput);
+    await userEvent.type(krwInput, "10.2");
+    await waitFor(async () => {
+      expect(jpyInput.value).toStrictEqual("100");
+    });
+    unmount();
+  });
+
+  test("should update krw input when jpy input is changed", async () => {
+    const { unmount } = initWithCode("JPY(100)");
+    const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
+    const jpyInput = screen.getByTestId("input_JPY(100)") as HTMLInputElement;
+    await userEvent.clear(jpyInput);
+    await userEvent.type(jpyInput, "100");
+    await waitFor(async () => {
+      expect(krwInput.value).toStrictEqual("10.2");
+    });
     unmount();
   });
 });

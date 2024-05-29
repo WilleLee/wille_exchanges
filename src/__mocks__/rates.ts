@@ -9,10 +9,23 @@ export const ratesMock: IRate[] = [
     kftc_deal_bas_r: "1130.5",
     result: 1,
     ten_dd_efee_r: "0.00",
-    ttb: "1139.00",
-    tts: "1122.00",
+    ttb: "1139.00", // 송금 받을 때
+    tts: "1122.00", // 송금 보낼 때
     yy_efee_r: "0.00",
     bkpr: "1130.5",
+  },
+  {
+    cur_nm: "일본 옌",
+    cur_unit: "JPY(100)",
+    deal_bas_r: "10.2000",
+    kftc_bkpr: "10.2000",
+    kftc_deal_bas_r: "10.2000",
+    result: 1,
+    ten_dd_efee_r: "0.00",
+    ttb: "10.3800",
+    tts: "9.9800",
+    yy_efee_r: "0.00",
+    bkpr: "10.2000",
   },
   {
     cur_nm: "한국 원",
