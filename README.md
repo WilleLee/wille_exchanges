@@ -1,4 +1,4 @@
-# Wille exchanges (v1.0.0)
+# Wille exchanges (v1.0.1)
 
 환율을 조회하고 환전할 수 있는 어플리케이션입니다.
 

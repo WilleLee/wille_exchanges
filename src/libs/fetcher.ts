@@ -2,8 +2,6 @@ export async function fetcher<T>(
   input: RequestInfo,
   init?: RequestInit,
 ): Promise<T | undefined> {
-  console.log(input);
-  console.log(init);
   try {
     const response = await fetch(input, init);
     const data = (await response.json()) as T;
