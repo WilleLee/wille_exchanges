@@ -1,0 +1,24 @@
+{
+  "short_name": "Wille exchanges",
+  "name": "Wille exchanges",
+  "short_url": ".",
+  "start_url": ".",
+  "homepage_url": "https://wille-exchanges.vercel.app/",
+  "display": "standalone",
+  "theme_color": "#1f1f1f",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "logos/logo_96.png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "logos/logo_144.png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "logos/logo_192.png",
+      "sizes": "192x192"
+    }
+  ]
+}
