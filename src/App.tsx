@@ -46,6 +46,7 @@ function Layout({ children }: { children: ReactNode }) {
       css={css`
         max-width: 100%;
         width: 100%;
+        min-height: 100vh;
         overflow-x: hidden;
         padding: 0;
         margin: 0;
