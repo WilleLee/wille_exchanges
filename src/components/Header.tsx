@@ -16,6 +16,9 @@ export default function Header({ onGoBack }: Props) {
         grid-template-rows: 36px;
         align-items: center;
         margin-bottom: 18px;
+        > div {
+          height: 100%;
+        }
       `}
     >
       <div>
