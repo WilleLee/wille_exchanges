@@ -44,7 +44,9 @@ describe("UnitPage", () => {
   });
   test("should do the initial render", () => {
     const { unmount } = initWithCode("USD");
-    const heading = screen.getByRole("heading", { name: "USD" });
+    const heading = screen.getByRole("heading", {
+      name: "한국수출입은행 고시환율",
+    });
     expect(heading).toBeDefined();
     const krwInput = screen.getByTestId("input_KRW") as HTMLInputElement;
     expect(krwInput).toBeDefined();

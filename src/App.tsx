@@ -13,6 +13,8 @@ function App() {
         styles={css`
           * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
           }
           h1,
           h2,
@@ -22,7 +24,6 @@ function App() {
           h6 {
             font-size: 1em;
             font-weight: normal;
-            margin: 0;
           }
         `}
       />

@@ -4,6 +4,7 @@ import StartPage from "@pages/index";
 import { wrapper } from "./libs/renderUI";
 import * as useRates from "@libs/swr/use-rates";
 import userEvent from "@testing-library/user-event";
+import flags from "@constants/flags";
 
 const mockPush = vi.fn();
 
@@ -48,11 +49,11 @@ describe("StartPage", () => {
     });
     const { unmount } = init();
 
-    const rateHeading = screen.getByTestId("rate_unit");
-    expect(rateHeading.innerHTML).toStrictEqual("USD");
+    const rateHeading = screen.getByTestId("rate_heading");
+    expect(rateHeading.innerHTML).toStrictEqual(`${flags.USD} 미국`);
 
-    const rateName = screen.getByTestId("rate_unitname");
-    expect(rateName.innerHTML).toStrictEqual("미국 달러");
+    const rateUnit = screen.getByTestId("rate_unit");
+    expect(rateUnit.innerHTML).toStrictEqual("USD");
 
     const rateDeal = screen.getByTestId("rate_deal");
     expect(rateDeal.innerHTML).toStrictEqual("1,188.00");

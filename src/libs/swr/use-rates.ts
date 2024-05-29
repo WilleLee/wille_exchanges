@@ -10,6 +10,9 @@ export default function useRates() {
   const { data, isLoading } = useSWR(
     `/api?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${dayjs().format("YYYYMMDD")}`,
     fetcher<IRate[]>,
+    {
+      dedupingInterval: 1000 * 60,
+    },
   );
 
   useEffect(() => {
@@ -17,6 +20,11 @@ export default function useRates() {
       init(data);
     }
   }, [data, init]);
+
+  // return {
+  //   rates: [],
+  //   isLoading: true,
+  // };
 
   return {
     rates,
