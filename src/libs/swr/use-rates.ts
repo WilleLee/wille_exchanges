@@ -15,6 +15,8 @@ export default function useRates() {
     },
   );
 
+  console.log("data", data);
+
   useEffect(() => {
     if (data !== undefined) {
       init(data);
