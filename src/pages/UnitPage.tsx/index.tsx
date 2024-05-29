@@ -210,6 +210,10 @@ const CurrencyInput = forwardRef(function CurrencyInput(
             width: 100%;
             text-align: right;
             border: 0 solid transparent;
+            -webkit-font-smoothing: antialiased;
+            white-space: nowrap;
+            user-select: none;
+            cursor: text;
 
             &:focus {
               outline: none;
