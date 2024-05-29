@@ -1,8 +1,10 @@
 {
   "short_name": "Wille exchanges",
   "name": "Wille exchanges",
+  "description": "check exchange rates",
   "short_url": ".",
   "start_url": ".",
+  "lang": "ko",
   "homepage_url": "https://wille-exchanges.vercel.app/",
   "display": "standalone",
   "theme_color": "#1f1f1f",
@@ -10,15 +12,18 @@
   "icons": [
     {
       "src": "logos/logo_96.png",
-      "sizes": "96x96"
+      "sizes": "96x96",
+      "type": "image/png"
     },
     {
       "src": "logos/logo_144.png",
-      "sizes": "144x144"
+      "sizes": "144x144",
+      "type": "image/png"
     },
     {
       "src": "logos/logo_192.png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ]
 }
