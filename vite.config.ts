@@ -20,8 +20,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target:
-          "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON",
+        target: "https://www.koreaexim.go.kr/site/program/financial",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

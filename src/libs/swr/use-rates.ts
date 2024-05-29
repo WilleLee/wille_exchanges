@@ -8,15 +8,12 @@ import useSWR from "swr";
 export default function useRates() {
   const { rates, init } = useRatesStore();
   const { data, isLoading } = useSWR(
-    `${import.meta.env.VITE_EXCHANGE_API_URL}?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${dayjs().format("YYYYMMDD")}`,
-    // `/api?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${dayjs().format("YYYYMMDD")}`,
+    `/api/exchangeJSON?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${dayjs().format("YYYYMMDD")}`,
     fetcher<IRate[]>,
     {
       dedupingInterval: 1000 * 60,
     },
   );
-
-  console.log("data", data);
 
   useEffect(() => {
     if (data !== undefined) {
