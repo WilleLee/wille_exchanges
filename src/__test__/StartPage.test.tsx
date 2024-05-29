@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import StartPage from "@pages/index";
 import { wrapper } from "./libs/renderUI";
-import * as useRates from "@libs/swr/useRates";
+import * as useRates from "@libs/swr/use-rates";
 import userEvent from "@testing-library/user-event";
 
 const mockPush = vi.fn();
@@ -62,7 +62,7 @@ describe("StartPage", () => {
 
   test("should render loading indicator when loading", async () => {
     vi.spyOn(useRates, "default").mockReturnValue({
-      rates: undefined,
+      rates: [],
       isLoading: true,
     });
     const { unmount } = init();
