@@ -14,7 +14,8 @@ if (hour < 11) {
 export default function useRates() {
   const { rates, init } = useRatesStore();
   const { data, isLoading } = useSWR(
-    `/api/exchangeJSON?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${searchdate}`,
+    // `/api/exchangeJSON?authkey=${import.meta.env.VITE_EXCHANGE_AUTH_KEY}&data=AP01&searchdate=${searchdate}`,
+    `/api/exchangeJSON?data=AP01&searchdate=${searchdate}`,
     fetcher<IRate[]>,
     {
       dedupingInterval: 1000 * 60,
