@@ -9,8 +9,16 @@ export type SearchdateStore = {
 export const searchdateStoreCreator: StateCreator<SearchdateStore> = (set) => ({
   searchdate: dayjs().format("YYYYMMDD"),
   adjust: /* minus 1 day of the prev searchdata */ () => {
-    set((state) => ({
-      searchdate: dayjs(state.searchdate).subtract(1, "day").format("YYYYMMDD"),
-    }));
+    set((state) => {
+      const prev = dayjs(state.searchdate).subtract(1, "day");
+      // only update date if it's after (today - 7 days)
+      if (prev.isAfter(dayjs().subtract(7, "day"))) {
+        return {
+          searchdate: prev.format("YYYYMMDD"),
+        };
+      } else {
+        return state;
+      }
+    });
   },
 });

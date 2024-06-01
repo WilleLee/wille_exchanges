@@ -20,12 +20,12 @@ export default function useRates() {
   useEffect(() => {
     let isValidEffect = true;
     if (isLoading) return;
-    if (data === undefined) return;
+    if (data === undefined) return; // 에러인 경우
     if (data.length > 0) return;
     if (isValidEffect) {
       setTimeout(() => {
         adjust();
-      }, 100);
+      }, 300);
     }
 
     return () => {
