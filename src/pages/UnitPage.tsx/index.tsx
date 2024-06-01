@@ -7,6 +7,8 @@ import useNav from "@hooks/useNav";
 import { formatNumberInput, inputToNumber } from "@libs/inputs";
 import { IRate } from "@libs/types";
 import { useRatesStore } from "@libs/zustand/rates/use-rates-store";
+import { useSearchdateStore } from "@libs/zustand/searchdate/use-searchdate-store";
+import dayjs from "dayjs";
 import {
   ChangeEvent,
   Fragment,
@@ -25,6 +27,7 @@ import { useParams } from "react-router-dom";
 const MAX_INPUT = 1000000000000;
 
 export default function UnitPage() {
+  const { searchdate } = useSearchdateStore();
   const { replace, goBack } = useNav();
   const { code } = useParams();
   const { rates } = useRatesStore();
@@ -87,7 +90,7 @@ export default function UnitPage() {
           </Fragment>
         )}
       </Controller>
-      <InputInfoView />
+      <InputInfoView searchdate={searchdate} />
       <PriceInfoView
         ttb={formatNumberInput(unitRate.ttb)}
         tts={formatNumberInput(unitRate.tts)}
@@ -227,7 +230,13 @@ const CurrencyInput = forwardRef(function CurrencyInput(
   );
 });
 
-const InputInfoView = memo(function InputInfoView() {
+interface InputInfoViewProps {
+  searchdate: string;
+}
+
+const InputInfoView = memo(function InputInfoView({
+  searchdate,
+}: InputInfoViewProps) {
   return (
     <div
       css={css`
@@ -244,6 +253,9 @@ const InputInfoView = memo(function InputInfoView() {
           padding-left: 16px;
         `}
       >
+        <li data-testid="textbox_searchdate">
+          {dayjs(searchdate).format("YYYY.MM.DD.")} 기준
+        </li>
         <li>소수점 둘째 자리 수 아래는 버림</li>
         <li>{formatNumberInput(String(MAX_INPUT))}을 초과하여 입력 불가능</li>
         <li>11시 이전인 경우 하루 전의 환율을 조회함</li>
